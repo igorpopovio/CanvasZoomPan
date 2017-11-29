@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CanvasZoomPan"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow"
+        Height="350"
+        Width="525">
+    <local:ZoomControl x:Name="zoomControl"
+                       Mode="Fill"
+                       RenderTransformOrigin="0.5,0.5">
+        <local:ZoomControl.Resources>
+            <Style TargetType="{x:Type Rectangle}">
+                <Setter Property="local:DragBehaviour.IsDragEnabled"
+                        Value="False" />
+                <Setter Property="local:DragBehaviour.X"
+                        Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Left)}" />
+                <Setter Property="local:DragBehaviour.Y"
+                        Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Top)}" />
+            </Style>
+        </local:ZoomControl.Resources>
+        <local:ZoomControl.RenderTransform>
+            <ScaleTransform ScaleY="-1"
+                            ScaleX="1" />
+        </local:ZoomControl.RenderTransform>
+    </local:ZoomControl>
 </Window>
