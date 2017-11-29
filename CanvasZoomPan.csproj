@@ -54,6 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="ZoomControl\ZoomContentPresenter.cs" />
+    <Compile Include="ZoomControl\ZoomControl.cs" />
+    <Compile Include="ZoomControl\ZoomControlModes.cs" />
+    <Compile Include="ZoomControl\ZoomViewModifierMode.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,6 +67,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ZoomControl\ContentSizeChangedDelegate.cs" />
+    <Compile Include="ZoomControl\DragBehaviour.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
