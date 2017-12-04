@@ -7,6 +7,11 @@ namespace CanvasZoomPan {
     public class ZoomContentPresenter : ContentPresenter {
         public event ContentSizeChangedHandler ContentSizeChanged;
 
+
+        public ZoomContentPresenter() {
+            var x = true;
+        }
+
         public struct BoundingBox {
             public Point BottomLeft;
             public Point TopRight;
@@ -42,6 +47,8 @@ namespace CanvasZoomPan {
                                   : null;
             if (child == null) return arrangeBounds;
 
+            
+
             UpdateContentSize();
             child.Arrange(new Rect());
 
@@ -59,6 +66,10 @@ namespace CanvasZoomPan {
             var maxY = Double.MinValue;
             var minY = Double.MaxValue;
 
+
+
+            var bounds = VisualTreeHelper.GetDescendantBounds(this);
+
             //foreach (var room in Rooms)
             //    foreach (var point in room.RoomPoints) {
             //        minX = Math.Min(minX, point.X);
@@ -67,10 +78,12 @@ namespace CanvasZoomPan {
             //        maxY = Math.Max(maxY, point.Y);
             //}
 
+
+
             return new BoundingBox {
-                BottomLeft = new Point(minX, minY),
-                TopRight = new Point(maxX, maxY),
-                Size = new Size(maxX - minX, maxY - minY),
+                BottomLeft = bounds.TopLeft,
+                TopRight = bounds.BottomRight,
+                Size = bounds.Size,
             };
         }
     }

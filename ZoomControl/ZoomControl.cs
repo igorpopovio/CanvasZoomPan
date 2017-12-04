@@ -257,8 +257,10 @@ namespace CanvasZoomPan {
                 _translateTransform = new TranslateTransform();
                 _transformGroup.Children.Add(_scaleTransform);
                 _transformGroup.Children.Add(_translateTransform);
-                Presenter.RenderTransform = _transformGroup;
-                Presenter.RenderTransformOrigin = new Point(0.5, 0.5);
+                if (Presenter != null) {
+                    Presenter.RenderTransform = _transformGroup;
+                    Presenter.RenderTransformOrigin = new Point(0.5, 0.5);
+                }
             }
         }
 

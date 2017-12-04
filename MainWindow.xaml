@@ -8,22 +8,45 @@
         Title="MainWindow"
         Height="350"
         Width="525">
-    <local:ZoomControl x:Name="zoomControl"
-                       Mode="Fill"
-                       RenderTransformOrigin="0.5,0.5">
-        <local:ZoomControl.Resources>
-            <Style TargetType="{x:Type Rectangle}">
-                <Setter Property="local:DragBehaviour.IsDragEnabled"
-                        Value="False" />
-                <Setter Property="local:DragBehaviour.X"
-                        Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Left)}" />
-                <Setter Property="local:DragBehaviour.Y"
-                        Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Top)}" />
-            </Style>
-        </local:ZoomControl.Resources>
-        <local:ZoomControl.RenderTransform>
-            <ScaleTransform ScaleY="-1"
-                            ScaleX="1" />
-        </local:ZoomControl.RenderTransform>
-    </local:ZoomControl>
+    <Grid>
+        <!--<Canvas>
+            <Polyline Name="polyline"
+                      Points="{Binding Polylines[0].Points}"
+                      Stroke="Red"
+                      StrokeThickness="2" />
+        </Canvas>-->
+        
+        <local:ZoomControl x:Name="zoomControl"
+                           Mode="Fill"
+                           RenderTransformOrigin="0.5,0.5">
+            <local:ZoomControl.Resources>
+                <Style TargetType="{x:Type Rectangle}">
+                    <Setter Property="local:DragBehaviour.IsDragEnabled"
+                            Value="False" />
+                    <Setter Property="local:DragBehaviour.X"
+                            Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Left)}" />
+                    <Setter Property="local:DragBehaviour.Y"
+                            Value="{Binding RelativeSource={RelativeSource Self},Path=(Canvas.Top)}" />
+                </Style>
+            </local:ZoomControl.Resources>
+            <local:ZoomControl.RenderTransform>
+                <ScaleTransform ScaleY="-1"
+                                ScaleX="1" />
+            </local:ZoomControl.RenderTransform>
+            <ItemsControl ItemsSource="{Binding Path=Polylines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Polyline Name="polyline"
+                                  Points="{Binding Points}" Fill="Red" Stroke="Red" StrokeThickness="2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </local:ZoomControl>
+    </Grid>
 </Window>
