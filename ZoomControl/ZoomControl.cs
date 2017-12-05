@@ -75,7 +75,7 @@ namespace CanvasZoomPan {
         }
 
         public static readonly DependencyProperty MinTranslateXProperty =
-            DependencyProperty.Register("MinTranslateX", typeof(double), typeof(ZoomControl), new PropertyMetadata(-100d));
+            DependencyProperty.Register("MinTranslateX", typeof(double), typeof(ZoomControl), new PropertyMetadata(-10000d));
 
 
 
@@ -85,7 +85,7 @@ namespace CanvasZoomPan {
         }
 
         public static readonly DependencyProperty MaxTranslateXProperty =
-            DependencyProperty.Register("MaxTranslateX", typeof(double), typeof(ZoomControl), new PropertyMetadata(100d));
+            DependencyProperty.Register("MaxTranslateX", typeof(double), typeof(ZoomControl), new PropertyMetadata(10000d));
 
 
         public double MinTranslateY {
@@ -94,7 +94,7 @@ namespace CanvasZoomPan {
         }
 
         public static readonly DependencyProperty MinTranslateYProperty =
-            DependencyProperty.Register("MinTranslateY", typeof(double), typeof(ZoomControl), new PropertyMetadata(-100d));
+            DependencyProperty.Register("MinTranslateY", typeof(double), typeof(ZoomControl), new PropertyMetadata(-10000d));
 
 
         public double MaxTranslateY {
@@ -103,7 +103,7 @@ namespace CanvasZoomPan {
         }
 
         public static readonly DependencyProperty MaxTranslateYProperty =
-            DependencyProperty.Register("MaxTranslateY", typeof(double), typeof(ZoomControl), new PropertyMetadata(100d));
+            DependencyProperty.Register("MaxTranslateY", typeof(double), typeof(ZoomControl), new PropertyMetadata(10000d));
 
 
         public static readonly DependencyProperty ZoomBoxBackgroundProperty =
@@ -288,8 +288,8 @@ namespace CanvasZoomPan {
         private double GetCoercedTranslateX(double baseValue, double zoom) {
             if (Presenter == null)
                 return 0.0;
-
-            return baseValue.EnsureIsBetween(MinTranslateX * globalDeltaZoom, MaxTranslateX * globalDeltaZoom);
+            // return baseValue.EnsureIsBetween(MinTranslateX * globalDeltaZoom, MaxTranslateX * globalDeltaZoom);
+            return baseValue;
         }
 
         private static object TranslateY_Coerce(DependencyObject d, object basevalue) {
@@ -300,8 +300,8 @@ namespace CanvasZoomPan {
         private double GetCoercedTranslateY(double baseValue, double zoom) {
             if (Presenter == null)
                 return 0.0;
-
-            return baseValue.EnsureIsBetween(MinTranslateY * globalDeltaZoom, MaxTranslateY * globalDeltaZoom);
+            // return baseValue.EnsureIsBetween(MinTranslateY * globalDeltaZoom, MaxTranslateY * globalDeltaZoom);
+            return baseValue;
         }
 
 
@@ -495,11 +495,11 @@ namespace CanvasZoomPan {
 
             var centerTranslation = GetCenterIntoViewTranslation();
             var box = Presenter.CalculateBoundingBox();
-            MinTranslateX = -box.BottomLeft.X;
-            MinTranslateY = -box.BottomLeft.Y;
+            // MinTranslateX = -box.BottomLeft.X;
+            // MinTranslateY = -box.BottomLeft.Y;
 
-            MaxTranslateX = (-box.BottomLeft.X + Presenter.ContentSize.Width);
-            MaxTranslateY = (-box.BottomLeft.Y + Presenter.ContentSize.Height);
+            // MaxTranslateX = (-box.BottomLeft.X + Presenter.ContentSize.Width);
+            // MaxTranslateY = (-box.BottomLeft.Y + Presenter.ContentSize.Height);
 
             //MaxTranslateX = 1000;
             //MaxTranslateY = 1000;
