@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:CanvasZoomPan"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="350"
-        Width="525">
+        Height="577"
+        Width="430">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -73,7 +73,7 @@
                    FontWeight="Bold"
                    Grid.Row="1"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=Zoom}"
                    Grid.Row="1"
                    Grid.Column="1" />
 
@@ -81,7 +81,7 @@
                    FontWeight="Bold"
                    Grid.Row="2"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MinZoom}"
                    Grid.Row="2"
                    Grid.Column="1" />
 
@@ -89,7 +89,7 @@
                    FontWeight="Bold"
                    Grid.Row="3"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MaxZoom}"
                    Grid.Row="3"
                    Grid.Column="1" />
 
@@ -97,7 +97,7 @@
                    FontWeight="Bold"
                    Grid.Row="4"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=TranslateX}"
                    Grid.Row="4"
                    Grid.Column="1" />
 
@@ -105,7 +105,7 @@
                    FontWeight="Bold"
                    Grid.Row="5"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MinTranslateX}"
                    Grid.Row="5"
                    Grid.Column="1" />
 
@@ -113,7 +113,7 @@
                    FontWeight="Bold"
                    Grid.Row="6"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MaxTranslateX}"
                    Grid.Row="6"
                    Grid.Column="1" />
 
@@ -121,7 +121,7 @@
                    FontWeight="Bold"
                    Grid.Row="7"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=TranslateY}"
                    Grid.Row="7"
                    Grid.Column="1" />
 
@@ -129,7 +129,7 @@
                    FontWeight="Bold"
                    Grid.Row="8"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MinTranslateY}"
                    Grid.Row="8"
                    Grid.Column="1" />
 
@@ -137,7 +137,7 @@
                    FontWeight="Bold"
                    Grid.Row="9"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=MaxTranslateY}"
                    Grid.Row="9"
                    Grid.Column="1" />
 
@@ -145,7 +145,7 @@
                    FontWeight="Bold"
                    Grid.Row="10"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=ActualWidth}"
                    Grid.Row="10"
                    Grid.Column="1" />
 
@@ -153,7 +153,7 @@
                    FontWeight="Bold"
                    Grid.Row="11"
                    Grid.Column="0" />
-            <Label Content="12.34"
+            <Label Content="{Binding ElementName=zoomControl, Path=ActualHeight}"
                    Grid.Row="11"
                    Grid.Column="1" />
 
