@@ -166,6 +166,12 @@ namespace CanvasZoomPan {
             PreviewMouseDown += ZoomControl_PreviewMouseDown;
             MouseDown += ZoomControl_MouseDown;
             MouseUp += ZoomControl_MouseUp;
+            Loaded += ZoomControl_Loaded;
+        }
+
+        private void ZoomControl_Loaded(object sender, RoutedEventArgs e) {
+            LimitZoomingAndPanning();
+            ZoomToFill();
         }
 
         public Brush ZoomBoxBackground {
@@ -590,24 +596,15 @@ namespace CanvasZoomPan {
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
-
-            //get the presenter, and initialize
             Presenter = GetTemplateChild(PART_Presenter) as ZoomContentPresenter;
+            if (Presenter == null) return;
 
-            if (Presenter != null) {
-                LimitZoomingAndPanning();
-                ZoomToOriginal();
-                ZoomToFill();
-                if (Mode == ZoomControlModes.Fill)
-                    DoZoomToFill();
-
-                Presenter.SizeChanged += (s, a) => {
-                    UpdateSize(a.PreviousSize, a.NewSize);
-                };
-                Presenter.ContentSizeChanged += (s, oldSize, newSize) => {
-                    UpdateSize(oldSize, newSize);
-                };
-            }
+            Presenter.SizeChanged += (s, a) => {
+                UpdateSize(a.PreviousSize, a.NewSize);
+            };
+            Presenter.ContentSizeChanged += (s, oldSize, newSize) => {
+                UpdateSize(oldSize, newSize);
+            };
         }
 
         private void UpdateSize(Size oldSize, Size newSize) {

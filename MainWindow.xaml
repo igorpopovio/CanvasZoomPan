@@ -6,17 +6,9 @@
         xmlns:local="clr-namespace:CanvasZoomPan"
         mc:Ignorable="d"
         Title="MainWindow"
-        Loaded="Window_Loaded"
         Height="350"
         Width="525">
     <Grid>
-        <!--<Canvas>
-            <Polyline Name="polyline"
-                      Points="{Binding Polylines[0].Points}"
-                      Stroke="Red"
-                      StrokeThickness="2" />
-        </Canvas>-->
-        
         <local:ZoomControl x:Name="zoomControl"
                            Mode="Fill"
                            RenderTransformOrigin="0.5,0.5">
@@ -40,13 +32,6 @@
                         <Canvas />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Polyline Name="polyline"
-                                  Points="{Binding Points}" Fill="Red" Stroke="Red" StrokeThickness="2"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </local:ZoomControl>
     </Grid>
