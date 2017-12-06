@@ -23,5 +23,10 @@ namespace CanvasZoomPan {
             ViewModel.Polylines.Add(polyline);
             DataContext = ViewModel;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e) {
+            zoomControl.LimitZoomingAndPanning();
+            zoomControl.ZoomToFill();
+        }
     }
 }

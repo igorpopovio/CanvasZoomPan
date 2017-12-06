@@ -577,8 +577,6 @@ namespace CanvasZoomPan {
         }
 
         public void ZoomToFill() {
-            MinZoom = 0.1;
-            MaxZoom = 100;
             Mode = ZoomControlModes.Fill;
         }
 
@@ -597,8 +595,11 @@ namespace CanvasZoomPan {
             Presenter = GetTemplateChild(PART_Presenter) as ZoomContentPresenter;
 
             if (Presenter != null) {
-                ZoomToFill();
                 LimitZoomingAndPanning();
+                ZoomToOriginal();
+                ZoomToFill();
+                if (Mode == ZoomControlModes.Fill)
+                    DoZoomToFill();
 
                 Presenter.SizeChanged += (s, a) => {
                     UpdateSize(a.PreviousSize, a.NewSize);
@@ -609,42 +610,11 @@ namespace CanvasZoomPan {
             }
         }
 
-
-
         private void UpdateSize(Size oldSize, Size newSize) {
             LimitZoomingAndPanning();
 
             if (Mode == ZoomControlModes.Fill)
                 DoZoomToFill();
-            else {
-                var center = new Point(ActualWidth / 2, ActualHeight / 2);
-                var initialTranslate = GetCenterIntoViewTranslation();
-
-
-                var resize = new Vector((newSize.Width - oldSize.Width) / 2, (newSize.Height - oldSize.Height) / 2);
-                var original = new Vector(TranslateX, TranslateY);
-                var final = original - resize;
-                // ZoomTo(new Rect(oldSize));
-
-                var rect = new Rect(
-                    Presenter.BoundingBoxProperty.BottomLeft.X,
-                    Presenter.BoundingBoxProperty.BottomLeft.Y,
-                    newSize.Width,
-                    newSize.Height);
-
-                var oldAnimationLength = AnimationLength;
-                AnimationLength = TimeSpan.Zero;
-
-                var descendantRect = VisualTreeHelper.GetDescendantBounds(Presenter);
-
-                // ZoomTo(descendantRect);
-                AnimationLength = oldAnimationLength;
-
-                //DoZoomAnimation(1.0, initialTranslate.X, initialTranslate.Y, TimeSpan.Zero);
-
-                // DoTranslationAnimation(final.X, final.Y, TimeSpan.Zero);
-                // DoZoom(1, center, center, center);
-            }
         }
     }
 }
