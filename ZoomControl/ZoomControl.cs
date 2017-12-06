@@ -510,8 +510,9 @@ namespace CanvasZoomPan {
 
         private double GetZoomToFitSize() {
             var padding = 10;
-            var minWidth = ActualWidth / (Presenter.ContentSize.Width + padding);
-            var minHeight = ActualHeight / (Presenter.ContentSize.Height + padding);
+            var box = Presenter.CalculateBoundingBox();
+            var minWidth = ActualWidth / (box.Size.Width + padding);
+            var minHeight = ActualHeight / (box.Size.Height + padding);
             var minBoth = Math.Min(minWidth, minHeight);
             return FitWidthOnly ? minWidth : minBoth;
         }
