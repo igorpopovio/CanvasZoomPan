@@ -294,8 +294,7 @@ namespace CanvasZoomPan {
         private double GetCoercedTranslateX(double baseValue, double zoom) {
             if (Presenter == null)
                 return 0.0;
-            // return baseValue.EnsureIsBetween(MinTranslateX * globalDeltaZoom, MaxTranslateX * globalDeltaZoom);
-            return baseValue;
+            return baseValue.EnsureIsBetween(MinTranslateX, MaxTranslateX);
         }
 
         private static object TranslateY_Coerce(DependencyObject d, object basevalue) {
@@ -306,8 +305,7 @@ namespace CanvasZoomPan {
         private double GetCoercedTranslateY(double baseValue, double zoom) {
             if (Presenter == null)
                 return 0.0;
-            // return baseValue.EnsureIsBetween(MinTranslateY * globalDeltaZoom, MaxTranslateY * globalDeltaZoom);
-            return baseValue;
+            return baseValue.EnsureIsBetween(MinTranslateY, MaxTranslateY);
         }
 
 
@@ -442,6 +440,17 @@ namespace CanvasZoomPan {
                 double delta = (double)e.NewValue / (double)e.OldValue;
                 zc.TranslateX *= delta;
                 zc.TranslateY *= delta;
+
+
+
+                zc.MinTranslateX *= delta;
+                zc.MinTranslateY *= delta;
+
+
+                zc.MaxTranslateX *= delta;
+                zc.MaxTranslateY *= delta;
+
+
                 zc.Mode = ZoomControlModes.Custom;
             }
         }
@@ -464,7 +473,7 @@ namespace CanvasZoomPan {
         private void DoZoom(double deltaZoom, Point origoPosition, Point startHandlePosition, Point targetHandlePosition) {
             globalDeltaZoom = deltaZoom;
             AnimationLength = TimeSpan.FromMilliseconds(500);
-            LimitZoomingAndPanning();
+            LimitZoomingAndPanning(deltaZoom);
 
             double startZoom = Zoom;
             double currentZoom = startZoom * deltaZoom;
@@ -485,15 +494,18 @@ namespace CanvasZoomPan {
             var zoomedTargetPointPos = targetPoint * currentZoom + startTranslate;
             var endTranslate = vTarget - zoomedTargetPointPos;
 
-            double transformX = GetCoercedTranslateX(TranslateX + endTranslate.X, currentZoom);
-            double transformY = GetCoercedTranslateY(TranslateY + endTranslate.Y, currentZoom);
+            //double transformX = GetCoercedTranslateX(TranslateX + endTranslate.X, currentZoom);
+            //double transformY = GetCoercedTranslateY(TranslateY + endTranslate.Y, currentZoom);
+
+            double transformX = TranslateX + endTranslate.X;
+            double transformY = TranslateY + endTranslate.Y;
 
             DoZoomAnimation(currentZoom, transformX, transformY);
             Mode = ZoomControlModes.Custom;
             AnimationLength = TimeSpan.Zero;
         }
 
-        public void LimitZoomingAndPanning() {
+        private void LimitZoomingAndPanning(double deltaZoom = 1) {
             if (Presenter == null) return;
             Presenter.UpdateContentSize();
             MinZoom = GetZoomToFitSize();
@@ -501,18 +513,18 @@ namespace CanvasZoomPan {
 
             var centerTranslation = GetCenterIntoViewTranslation();
             var box = Presenter.CalculateBoundingBox();
-            // MinTranslateX = -box.BottomLeft.X;
-            // MinTranslateY = -box.BottomLeft.Y;
 
-            // MaxTranslateX = (-box.BottomLeft.X + Presenter.ContentSize.Width);
-            // MaxTranslateY = (-box.BottomLeft.Y + Presenter.ContentSize.Height);
-
-            //MaxTranslateX = 1000;
-            //MaxTranslateY = 1000;
+            var boundingBoxCenter = new Point(box.BottomLeft.X + box.Size.Width / 2, box.BottomLeft.Y + box.Size.Height / 2);
+            var canvasCenter = new Point(ActualWidth / 2, ActualHeight / 2);
 
 
-            // DoZoomAnimation(deltaZoom, centerTranslation.X * deltaZoom, centerTranslation.Y * deltaZoom);
+            MinTranslateX = box.BottomLeft.X * deltaZoom;
+            MinTranslateY = box.BottomLeft.Y * deltaZoom;
+
+            MaxTranslateX = (ActualWidth - box.TopRight.X) * deltaZoom;
+            MaxTranslateY = (ActualHeight - box.TopRight.Y) * deltaZoom;
         }
+
 
         private double GetZoomToFitSize() {
             var padding = 10;
