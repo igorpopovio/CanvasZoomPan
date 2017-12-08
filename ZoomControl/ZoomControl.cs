@@ -262,7 +262,7 @@ namespace CanvasZoomPan {
                 _scaleTransform = new ScaleTransform();
                 _translateTransform = new TranslateTransform();
                 _transformGroup.Children.Add(_scaleTransform);
-                _transformGroup.Children.Add(_translateTransform);
+                // _transformGroup.Children.Add(_translateTransform);
                 if (Presenter != null) {
                     Presenter.RenderTransform = _transformGroup;
                     Presenter.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -518,16 +518,16 @@ namespace CanvasZoomPan {
             var canvasCenter = new Point(ActualWidth / 2, ActualHeight / 2);
 
 
-            MinTranslateX = box.BottomLeft.X * deltaZoom;
-            MinTranslateY = box.BottomLeft.Y * deltaZoom;
+            MinTranslateX = 0;
+            MinTranslateY = 0;
 
-            MaxTranslateX = (ActualWidth - box.TopRight.X) * deltaZoom;
-            MaxTranslateY = (ActualHeight - box.TopRight.Y) * deltaZoom;
+            MaxTranslateX = ActualWidth;
+            MaxTranslateY = ActualHeight;
         }
 
 
         private double GetZoomToFitSize() {
-            var padding = 10;
+            var padding = 0; // 10; // TODO: temp stuff to figure out translation! add proper padding later!
             var box = Presenter.CalculateBoundingBox();
             var minWidth = ActualWidth / (box.Size.Width + padding);
             var minHeight = ActualHeight / (box.Size.Height + padding);
