@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:CanvasZoomPan"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="577"
-        Width="430">
+        Height="243"
+        Width="420">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Border BorderThickness="2" BorderBrush="Black" Grid.ColumnSpan="1">
@@ -77,19 +77,19 @@
                    Grid.Row="1"
                    Grid.Column="1" />
 
-            <Label Content="MinZoom"
+            <Label Content="IsZooming"
                    FontWeight="Bold"
                    Grid.Row="2"
                    Grid.Column="0" />
-            <Label Content="{Binding ElementName=zoomControl, Path=MinZoom}"
+            <Label Content="{Binding ElementName=zoomControl, Path=IsZooming}"
                    Grid.Row="2"
                    Grid.Column="1" />
 
-            <Label Content="MaxZoom"
+            <Label Content=""
                    FontWeight="Bold"
                    Grid.Row="3"
                    Grid.Column="0" />
-            <Label Content="{Binding ElementName=zoomControl, Path=MaxZoom}"
+            <Label Content=""
                    Grid.Row="3"
                    Grid.Column="1" />
 

@@ -154,7 +154,22 @@ namespace CanvasZoomPan {
         private TranslateTransform _translateTransform;
 
         private int _zoomAnimCount;
-        private bool _isZooming = false;
+        // private bool _isZooming = false;
+
+
+
+
+        public bool IsZooming {
+            get { return (bool)GetValue(IsZoomingProperty); }
+            set { SetValue(IsZoomingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsZooming.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsZoomingProperty =
+            DependencyProperty.Register("IsZooming", typeof(bool), typeof(ZoomControl), new PropertyMetadata(false));
+
+
+
 
         static ZoomControl() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ZoomControl),
@@ -262,7 +277,7 @@ namespace CanvasZoomPan {
                 _scaleTransform = new ScaleTransform();
                 _translateTransform = new TranslateTransform();
                 _transformGroup.Children.Add(_scaleTransform);
-                // _transformGroup.Children.Add(_translateTransform);
+                _transformGroup.Children.Add(_translateTransform);
                 if (Presenter != null) {
                     Presenter.RenderTransform = _transformGroup;
                     Presenter.RenderTransformOrigin = new Point(0.5, 0.5);
@@ -413,7 +428,7 @@ namespace CanvasZoomPan {
             if (zc._translateTransform == null)
                 return;
             zc._translateTransform.X = (double)e.NewValue;
-            if (!zc._isZooming)
+            if (!zc.IsZooming)
                 zc.Mode = ZoomControlModes.Custom;
         }
 
@@ -422,7 +437,7 @@ namespace CanvasZoomPan {
             if (zc._translateTransform == null)
                 return;
             zc._translateTransform.Y = (double)e.NewValue;
-            if (!zc._isZooming)
+            if (!zc.IsZooming)
                 zc.Mode = ZoomControlModes.Custom;
         }
 
@@ -436,19 +451,23 @@ namespace CanvasZoomPan {
             // zoom = zc.CalculateConstrainedZoom(zoom);
             zc._scaleTransform.ScaleX = zoom;
             zc._scaleTransform.ScaleY = zoom;
-            if (!zc._isZooming) {
+            if (!zc.IsZooming) {
                 double delta = (double)e.NewValue / (double)e.OldValue;
+
+                var initialTranslateX = zc.TranslateX;
+                var initialTranslateY = zc.TranslateY;
+
                 zc.TranslateX *= delta;
                 zc.TranslateY *= delta;
 
 
 
-                zc.MinTranslateX *= delta;
-                zc.MinTranslateY *= delta;
+                //zc.MinTranslateX *= delta;
+                //zc.MinTranslateY *= delta;
 
 
-                zc.MaxTranslateX *= delta;
-                zc.MaxTranslateY *= delta;
+                //zc.MaxTranslateX *= delta;
+                //zc.MaxTranslateY *= delta;
 
 
                 zc.Mode = ZoomControlModes.Custom;
@@ -460,8 +479,10 @@ namespace CanvasZoomPan {
             Point origoPosition = new Point(ActualWidth / 2, ActualHeight / 2);
             Point mousePosition = e.GetPosition(this);
 
+            var deltaZoom = Math.Max(1 / MaxZoomDelta, Math.Min(MaxZoomDelta, e.Delta / 20000.0 * ZoomDeltaMultiplier + 1));
+
             DoZoom(
-                Math.Max(1 / MaxZoomDelta, Math.Min(MaxZoomDelta, e.Delta / 20000.0 * ZoomDeltaMultiplier + 1)),
+                deltaZoom,
                 origoPosition,
                 mousePosition,
                 mousePosition);
@@ -518,11 +539,11 @@ namespace CanvasZoomPan {
             var canvasCenter = new Point(ActualWidth / 2, ActualHeight / 2);
 
 
-            MinTranslateX = 0;
-            MinTranslateY = 0;
+            MinTranslateX = box.BottomLeft.X * deltaZoom;
+            MinTranslateY = box.BottomLeft.Y * deltaZoom;
 
-            MaxTranslateX = ActualWidth;
-            MaxTranslateY = ActualHeight;
+            MaxTranslateX = ActualWidth - box.Size.Width * deltaZoom;
+            MaxTranslateY = ActualHeight - box.Size.Height * deltaZoom;
         }
 
 
@@ -540,7 +561,7 @@ namespace CanvasZoomPan {
         }
 
         private void DoZoomAnimation(double targetZoom, double transformX, double transformY, TimeSpan animationLength) {
-            _isZooming = true;
+            IsZooming = true;
             var duration = new Duration(animationLength);
             DoTranslationAnimation(transformX, transformY, duration);
             StartAnimation(ZoomProperty, targetZoom, duration);
@@ -554,21 +575,18 @@ namespace CanvasZoomPan {
         private void StartAnimation(DependencyProperty dp, double toValue, Duration duration) {
             if (double.IsNaN(toValue) || double.IsInfinity(toValue)) {
                 if (dp == ZoomProperty) {
-                    _isZooming = false;
+                    IsZooming = false;
                 }
                 return;
             }
             var animation = new DoubleAnimation(toValue, duration);
             if (dp == ZoomProperty) {
-                _zoomAnimCount++;
                 animation.Completed += (s, args) => {
-                    _zoomAnimCount--;
-                    if (_zoomAnimCount > 0)
-                        return;
+
                     var zoom = Zoom;
                     BeginAnimation(ZoomProperty, null);
                     SetValue(ZoomProperty, zoom);
-                    _isZooming = false;
+                    IsZooming = false;
                 };
             }
             BeginAnimation(dp, animation, HandoffBehavior.Compose);
@@ -624,6 +642,13 @@ namespace CanvasZoomPan {
 
             if (Mode == ZoomControlModes.Fill)
                 DoZoomToFill();
+            else {
+                var widthDiff = newSize.Width - oldSize.Width;
+                var heightDiff = newSize.Height - oldSize.Height;
+
+                // TranslateX += widthDiff * 2;
+                // TranslateY += heightDiff * 2;
+            }
         }
     }
 }
