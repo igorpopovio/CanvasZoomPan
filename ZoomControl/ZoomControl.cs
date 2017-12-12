@@ -185,8 +185,8 @@ namespace CanvasZoomPan {
         }
 
         private void ZoomControl_Loaded(object sender, RoutedEventArgs e) {
-            LimitZoomingAndPanning();
-            ZoomToFill();
+            //LimitZoomingAndPanning();
+            //ZoomToFill();
         }
 
         public Brush ZoomBoxBackground {

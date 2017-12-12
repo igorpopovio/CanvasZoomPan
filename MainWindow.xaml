@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         <Border BorderThickness="2" BorderBrush="Black" Grid.ColumnSpan="1">
         <local:ZoomControl x:Name="zoomControl"
-                           Mode="Fill"
+                           Mode="Original"
                            RenderTransformOrigin="0.5,0.5"
                            >
             <local:ZoomControl.Resources>
